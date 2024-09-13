@@ -3,19 +3,23 @@
 #include <stdlib.h>
 #include <windows.h>
 
-char path[100];     
-
+char path[100] = {"\""};     
 
 int main(int argc, char * argv[]) {
     //initializing path and filename
-    GetCurrentDirectory(100, path); 
+    GetCurrentDirectory(100, path);
+    if (argc != 2) {
+        printf("\nERROR! No filename given . . .\nClosing Builder . . .");
+    } 
+
     char argInFilename[50];
     char * argument2 = path;
     //commands
     char argument1[] = {"gcc -o testScript "};
     char * testScript = {"\\testScript.exe"};
     char pause[] = "pause";
-    char rm[] = "del ";//add remove function by adding "" around path (somehow)
+    //first quotation mark added on initialization & last added and the end of mains
+    char rm[] = {"\"del "};
 
     strcpy(argInFilename, argv[1]);
     strcat(path, testScript);
@@ -32,13 +36,19 @@ int main(int argc, char * argv[]) {
     printf("Compiled successfully!\n");
     
 
-    printf("\n\nRunning File...\n\n**************************************************\n\n");
+    printf("\n\nRunning File. . .\n\n**************************************************\n\n");
 
     system(argument2);
 
-    printf("\n\n*******************************************\n\nFile ran, Closing Program...\n");
+    printf("\n\n*******************************************\n\nFile ran, Closing Program. . .\n");
 
-    //system(pause);
+    system(pause);
+    //adds quotation marks around path to use windows del command
+    strcat(path, "\"");
+    strcat(rm, path);
+    //removes testScript
+    system(rm);
+    printf("\nDeleting file and cleaning up builder. . .");
 
     return 0;
 }

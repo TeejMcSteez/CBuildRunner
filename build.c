@@ -1,4 +1,3 @@
-//testing on how to use git
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

@@ -9,7 +9,6 @@ int main(int argc, char * argv[]) {
     //initializing path and filename
     GetCurrentDirectory(100, path);
     
-
     char argInFilename[50];
     char * argument2 = path;
     //commands

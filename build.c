@@ -1,3 +1,4 @@
+//Made by Teej to use for my Intro to C & Assembly class to compile regular & debug file and run the file if wanted instead of using gcc -o . . . semantics.  
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -12,19 +13,21 @@ int main(int argc, char * argv[]) {
     char argInFilename[50];
     char * argument2 = path;
     //commands
-    char argument1[] = {"gcc -o test "};
-    char * testScript = {"\\test.exe"};
+    char argument1[] = {"gcc -o bldFile "};
+    char * testScript = {"\\bldFile.exe"};
     char pause[] = "pause";
     //first quotation mark added on initialization & last added and the end of mains
     char rm[] = {"\"del "};
     char * noRun = {"-n"};
     char * help = {"-h"};
+    char * db = {"-g"};
+    char dbCmd[4] = {" -g"};
     char argument3[4];
-
+    //cpys filename argument to filename variable (makes it easier to remember)
     strcpy(argInFilename, argv[1]);
     //checks if user asked for help
     if (strcmp(help, argv[1]) == 0) {
-        printf("\nTeej's C executable builder\nSimply type build _filename_ to build, execute, and remove executable for testing\nUse -n to just compiled script");
+        printf("\nTeej's C executable builder\nSimply type build _filename_ to build, execute, and remove executable for testing\nUse -n to just compiled script\nUse -g to just compile the script but in GDB debug mode");
         return 0;
     }
     //if chose no run cpy argument  
@@ -41,29 +44,31 @@ int main(int argc, char * argv[]) {
         printf("\nERROR! To many arguments . . .\nClosing Builder . . .");
         return 0;
     } 
-
-    strcat(path, testScript);
+    //adding the filename to the gcc call
     strcat(argument1, argInFilename);
+    //if select debug adds debug flag
+    if (argc == 3 && strcmp(noRun, argv[2])) {
+        strcat(argument1, dbCmd);
+    } 
 
     printf("Running Build Script\n\n");
 
     if (system(argument1) == 0) {
         //continues normally
     } else {
-        printf("\nError Occured! Oopsie, Check your code 4 bugs\n");
+        printf("\nError Occured! Oopsie, Check de code 4 bugs\n");
         return 0;
     }
-    printf("Compiled successfully!\n");
 
+    printf("Compiled successfully!\n");
+    //if in debug or no run mode closes after compiling
    if (argc == 3) {
-        if (strcmp(noRun, argv[2]) == 0) {
-            printf("Selected No Run . . . Cleaning up builder . . .");
+        if (strcmp(noRun, argv[2]) == 0 || strcmp(db, argv[2]) == 0) {
+            printf("Selected No Run or Debug Mode. . . Cleaning Up Builder . . .");
             return 0;
         } 
-        if (strcmp(noRun, argv[2]) != 0) {
-            printf("Error Occured! Invalid Input . . . Cleaning up builder . . .");
-            return 0;
-        }
+   } else {//if not in -n or -g mode then copys the test script to the end of the users current path in windows 
+        strcat(path, testScript);
    }
 
     printf("\n\nRunning File. . .\n\n**************************************************\n\n");
@@ -71,7 +76,7 @@ int main(int argc, char * argv[]) {
     if (system(argument2) == 0) {
         //continues normally
     } else {
-        printf("\nError Occured! Oopsie, Check your code 4 bugs\n");
+        printf("\nError Occured! Oopsie, Check de code 4 bugs\n");
         return 0;
     }
 
@@ -80,7 +85,7 @@ int main(int argc, char * argv[]) {
     system(pause);
     //adds quotation marks around path to use windows del command
     strcat(path, "\"");
-    strcat(rm, path);
+    strcat(rm, path);//delete test file in current directory command
     //removes testScript
     system(rm);
     printf("\nDeleting file and cleaning up builder. . .");
